@@ -15,8 +15,23 @@ jobs:
       - uses: cachix/install-nix-action@v17
         with:
           nix_path: nixpkgs=channel:nixos-22.05
-      - uses: workflow/nix-shell-action@v3.0.2
+      - name: Download dependencies
+        uses: workflow/nix-shell-action@v3.0.2
         with:
           packages: sbt
-          script: |
-            which sbt
+          script: sbt update
+      - name: Check format
+        uses: workflow/nix-shell-action@v3.0.2
+        with:
+          packages: sbt
+          script: sbt checkFormat
+      - name: Lint
+        uses: workflow/nix-shell-action@v3.0.2
+        with:
+          packages: sbt
+          script: sbt lint
+      - name: Test
+        uses: workflow/nix-shell-action@v3.0.2
+        with:
+          packages: sbt
+          script: sbt coverage
