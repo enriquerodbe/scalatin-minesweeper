@@ -17,9 +17,5 @@ jobs:
           nix_path: nixpkgs=channel:nixos-22.05
       - name: Enter nix devShell
         run: nix develop
-      - name: Check format
-        run: sbt checkFormat
-      - name: Lint
-        run: sbt lint
       - name: Test
-        run: sbt coverage
+        run: which sbt
