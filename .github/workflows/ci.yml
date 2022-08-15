@@ -1,0 +1,25 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  ci:
+    name: Continuous Integration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cachix/install-nix-action@v17
+        with:
+          nix_path: nixpkgs=channel:nixos-22.05
+      - name: Enter nix devShell
+        run: nix develop
+      - name: Check format
+        run: sbt checkFormat
+      - name: Lint
+        run: sbt lint
+      - name: Test
+        run: sbt coverage
