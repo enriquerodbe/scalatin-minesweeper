@@ -15,7 +15,8 @@ jobs:
       - uses: cachix/install-nix-action@v17
         with:
           nix_path: nixpkgs=channel:nixos-22.05
-      - name: Enter nix devShell
-        run: nix develop
-      - name: Test
-        run: which sbt
+      - uses: workflow/nix-shell-action@v3.0.2
+        with:
+          packages: sbt
+          script: |
+            which sbt
