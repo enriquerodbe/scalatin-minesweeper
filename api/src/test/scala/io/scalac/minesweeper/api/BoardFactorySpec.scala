@@ -8,10 +8,15 @@ abstract class BoardFactorySpec(create: () => BoardFactory) extends FunSuite {
     assertEquals(board.allCoordinates.size, 5)
   }
 
-  test("Should set mines correctly") {
+  test("Should set mines on even number of neighbors") {
     val board = create().create(5, _.neighbors.size % 2 == 0)
     board.allCoordinates.foreach(c =>
       assertEquals(c.neighbors.size % 2 == 0, board.hasMine(c))
     )
+  }
+
+  test("Should set all mines") {
+    val board = create().create(5, _ => true)
+    board.allCoordinates.foreach(c => assert(board.hasMine(c)))
   }
 }

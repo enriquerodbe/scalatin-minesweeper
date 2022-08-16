@@ -19,12 +19,34 @@ abstract class BoardSpec(factory: BoardFactory) extends FunSuite {
       .foreach(assertEquals(_, PlayerState.Flagged))
   }
 
+  test("Flagging one cell should not affect other cells") {
+    val board = createBoard()
+
+    board.allCoordinates
+      .map(coordinate => (coordinate, board.flag(coordinate)))
+      .foreach { case (coordinate, updatedBoard) =>
+        updatedBoard.allCoordinates
+          .filterNot(_ == coordinate)
+          .foreach { c =>
+            assertEquals(updatedBoard.playerState(c), board.playerState(c))
+          }
+      }
+  }
+
   test("Uncovering any empty cell should set coordinate as uncovered") {
     val board = createBoard()
 
     coordinatesWithoutMine(board)
       .map(coordinate => board.uncover(coordinate).playerState(coordinate))
       .foreach(assertEquals(_, PlayerState.Uncovered))
+  }
+
+  test("Uncovering some empty cell should keep state as Playing") {
+    val board = createBoard()
+
+    coordinatesWithoutMine(board)
+      .map(coordinate => board.uncover(coordinate).state)
+      .foreach(assertEquals(_, BoardState.Playing))
   }
 
   test("Board state should start as Playing") {
