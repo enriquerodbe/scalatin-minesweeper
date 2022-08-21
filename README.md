@@ -35,10 +35,12 @@ documentation to find more about how they work:
 - [Scapegoat](https://github.com/scapegoat-scala/sbt-scapegoat) - Static linter
 - [Scalafmt](https://scalameta.org/scalafmt/docs/installation.html#sbt) - Code formatter
 - [Scoverage](https://github.com/scoverage/sbt-scoverage) - Code coverage
+- [Stryker](https://stryker-mutator.io/docs/stryker4s/getting-started/) - Mutation testing
 
 There are some sbt command alias provided as well:
 - `checkFormat` - Check all Scala files to verify their formatting.
 - `lint` - Compile with strict flags enabled plus wartremover checks and run scapegoat.
 - `testCoverage` - Enable coverage, run test, generate a report, and verify that minimum code coverage
 is reached.
+- `mutationTest` - Introduce changes to the code, run tests, and verify that some test fails.
 - `verify` - Run all the above sequentially.

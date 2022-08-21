@@ -23,3 +23,5 @@ jobs:
         run: nix develop -c sbt lint
       - name: Test
         run: nix develop -c sbt testCoverage
+      - name: Mutation test
+        run: nix develop -c sbt mutationTest
