@@ -3,7 +3,7 @@ lazy val commonSettings = Seq(
   scalaVersion := "2.13.8",
   scalacOptions += "-Xsource:3",
   ThisBuild / scapegoatVersion := "1.4.15",
-  wartremoverErrors ++= Warts.unsafe,
+  wartremoverErrors ++= Warts.unsafe.diff(Seq(Wart.Any)),
   coverageFailOnMinimum := true,
   coverageMinimumStmtTotal := 100,
   coverageMinimumBranchTotal := 100
@@ -16,7 +16,8 @@ lazy val api =
     .settings(
       name := "minesweeper-api",
       libraryDependencies ++= Seq(
-        "org.scalameta" %% "munit" % "0.7.29" % Test
+        "org.scalameta" %% "munit" % "0.7.29" % Test,
+        "org.scalameta" %% "munit-scalacheck" % "0.7.29" % Test
       )
     )
 
