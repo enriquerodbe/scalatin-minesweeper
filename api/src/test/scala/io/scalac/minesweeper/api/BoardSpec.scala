@@ -24,6 +24,15 @@ abstract class BoardSpec(factory: BoardFactory) extends ScalaCheckSuite {
     }
   }
 
+  property("Flagging twice should remove flag") {
+    forAll(boardGen) { board =>
+      forAll(coordinateGen(board)) { coordinate =>
+        val flaggedBoard = board.flag(coordinate).flag(coordinate)
+        assertEquals(flaggedBoard.playerState(coordinate), PlayerState.Covered)
+      }
+    }
+  }
+
   property("Flagging one cell should not affect other cells") {
     forAll(boardGen) { board =>
       forAll(coordinateGen(board)) { coordinate =>

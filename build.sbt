@@ -6,7 +6,8 @@ lazy val commonSettings = Seq(
   wartremoverErrors ++= Warts.unsafe.diff(Seq(Wart.Any)),
   coverageFailOnMinimum := true,
   coverageMinimumStmtTotal := 100,
-  coverageMinimumBranchTotal := 100
+  coverageMinimumBranchTotal := 100,
+  coverageExcludedPackages := "io.scalac.minesweeper.cli*"
 )
 
 lazy val api =
@@ -28,6 +29,25 @@ lazy val squared =
     .dependsOn(api % "test->test;compile->compile")
     .settings(
       name := "minesweeper-squared"
+    )
+
+lazy val cli =
+  project
+    .in(file("cli"))
+    .settings(commonSettings)
+    .dependsOn(api % "test->test;compile->compile")
+    .settings(
+      name := "minesweeper-cli",
+      libraryDependencies += "org.typelevel" %% "cats-effect" % "3.3.14"
+    )
+
+lazy val `cli-squared` =
+  project
+    .in(file("cli-squared"))
+    .settings(commonSettings)
+    .dependsOn(cli, squared)
+    .settings(
+      name := "minesweeper-cli-squared"
     )
 
 addCommandAlias("checkFormat", ";scalafmtSbtCheck ;scalafmtCheckAll")
