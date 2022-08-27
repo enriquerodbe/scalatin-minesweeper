@@ -3,8 +3,8 @@ package io.scalac.minesweeper.squared
 import munit.FunSuite
 
 class SquaredCoordinateSpec extends FunSuite {
-  private val boardSize = 8
-  private val lastIndex = boardSize - 1
+  private val boardSize = 9
+  private val lastIndex = SquaredCoordinate.maxIndex(boardSize)
   private val extremes = Seq(0, lastIndex)
   private val middle = 1 until lastIndex
 

@@ -12,4 +12,8 @@ trait Board {
   def playerState(coordinate: Coordinate): PlayerState
 
   def state: BoardState
+
+  def show: String
+
+  def size: Int
 }

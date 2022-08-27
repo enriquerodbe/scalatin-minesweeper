@@ -2,7 +2,8 @@ package io.scalac.minesweeper.squared
 
 import io.scalac.minesweeper.api.*
 
-class SquaredBoard(size: Int, _hasMine: Coordinate => Boolean) extends Board {
+class SquaredBoard(override val size: Int, _hasMine: Coordinate => Boolean)
+    extends Board {
   previous =>
   override def uncover(coordinate: Coordinate): Board =
     new SquaredBoard(size, _hasMine) {
@@ -31,13 +32,19 @@ class SquaredBoard(size: Int, _hasMine: Coordinate => Boolean) extends Board {
   override def flag(coordinate: Coordinate): Board =
     new SquaredBoard(size, _hasMine) {
       override def playerState(_coordinate: Coordinate): PlayerState =
-        if (_coordinate == coordinate) PlayerState.Flagged
-        else previous.playerState(_coordinate)
+        previous.playerState(_coordinate) match {
+          case PlayerState.Covered if _coordinate == coordinate =>
+            PlayerState.Flagged
+          case PlayerState.Flagged if _coordinate == coordinate =>
+            PlayerState.Covered
+          case previousState =>
+            previousState
+        }
     }
 
   override lazy val allCoordinates: Seq[SquaredCoordinate] = {
-    val sqrt = math.sqrt(size.toDouble).round.toInt
-    (0 until size).map(n => SquaredCoordinate(n / sqrt, n % sqrt, size))
+    val maxIndex = SquaredCoordinate.maxIndex(size) + 1
+    (0 until size).map(n => SquaredCoordinate(n / maxIndex, n % maxIndex, size))
   }
 
   override def hasMine(coordinate: Coordinate): Boolean =
@@ -48,4 +55,22 @@ class SquaredBoard(size: Int, _hasMine: Coordinate => Boolean) extends Board {
 
   override def state: BoardState =
     BoardState.Playing
+
+  override val show: String =
+    allCoordinates
+      .groupBy(_.x)
+      .toSeq
+      .sortBy(_._1)
+      .map(_._2)
+      .map(_.sortBy(_.y))
+      .map(_.map(showCoordinate))
+      .map(_.mkString(" | "))
+      .mkString("\n")
+
+  private def showCoordinate(coordinate: Coordinate): String =
+    playerState(coordinate) match {
+      case PlayerState.Covered   => "+"
+      case PlayerState.Uncovered => coordinate.neighbors.count(hasMine).toString
+      case PlayerState.Flagged   => "F"
+    }
 }
