@@ -28,7 +28,8 @@ lazy val squared =
     .settings(commonSettings)
     .dependsOn(api % "test->test;compile->compile")
     .settings(
-      name := "minesweeper-squared"
+      name := "minesweeper-squared",
+      libraryDependencies += "org.typelevel" %% "cats-parse" % "0.3.8"
     )
 
 lazy val cli =
@@ -38,7 +39,10 @@ lazy val cli =
     .dependsOn(api % "test->test;compile->compile")
     .settings(
       name := "minesweeper-cli",
-      libraryDependencies += "org.typelevel" %% "cats-effect" % "3.3.14"
+      libraryDependencies ++= Seq(
+        "org.typelevel" %% "cats-effect" % "3.3.14",
+        "org.typelevel" %% "cats-parse" % "0.3.8"
+      )
     )
 
 lazy val `cli-squared` =
@@ -52,6 +56,6 @@ lazy val `cli-squared` =
 
 addCommandAlias("checkFormat", ";scalafmtSbtCheck ;scalafmtCheckAll")
 addCommandAlias("lint", ";compile ;scapegoat")
-addCommandAlias("testCoverage", ";coverage ;test ;coverageReport")
+addCommandAlias("testCoverage", ";coverage ;test ;coverageAggregate")
 addCommandAlias("mutationTest", ";project squared ;stryker")
 addCommandAlias("verify", ";checkFormat ;lint ;testCoverage; mutationTest")

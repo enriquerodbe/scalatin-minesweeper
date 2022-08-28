@@ -1,12 +1,8 @@
 package io.scalac.minesweeper.cli
 
-import io.scalac.minesweeper.api.Coordinate
-
-sealed trait Movement {
-  def coordinate: Coordinate
-}
+sealed trait Movement
 
 object Movement {
-  final case class Uncover(coordinate: Coordinate) extends Movement
-  final case class Flag(coordinate: Coordinate) extends Movement
+  case object Uncover extends Movement
+  case object Flag extends Movement
 }

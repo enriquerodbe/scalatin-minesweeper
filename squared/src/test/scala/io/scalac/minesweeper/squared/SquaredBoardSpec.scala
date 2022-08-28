@@ -2,13 +2,13 @@ package io.scalac.minesweeper.squared
 
 import io.scalac.minesweeper.api.{Board, BoardSpec, Coordinate}
 
-class SquaredBoardSpec extends BoardSpec(new SquaredBoardFactory) {
+class SquaredBoardSpec extends BoardSpec(SquaredBoardFactory) {
   test("Should contain all coordinates") {
     val board = new SquaredBoard(9, _ => false)
     val coordinates = for {
       x <- 0 until 3
       y <- 0 until 3
-    } yield SquaredCoordinate(x, y, 9)
+    } yield SquaredCoordinate(x, y)
 
     board.allCoordinates.foreach(c => assert(coordinates.contains(c)))
     coordinates.foreach(c => assert(board.allCoordinates.contains(c)))
@@ -19,14 +19,14 @@ class SquaredBoardSpec extends BoardSpec(new SquaredBoardFactory) {
 
     def hasMine(coordinate: Coordinate): Boolean =
       coordinate match {
-        case SquaredCoordinate(x, _, _) if x == 0 => true
-        case _                                    => false
+        case SquaredCoordinate(x, _) if x == 0 => true
+        case _                                 => false
       }
 
     val toUncover =
-      Seq.tabulate(3)(SquaredCoordinate(1, _, size))
+      Seq.tabulate(3)(SquaredCoordinate(1, _))
     val toFlag =
-      Seq.tabulate(3)(SquaredCoordinate(0, _, size))
+      Seq.tabulate(3)(SquaredCoordinate(0, _))
 
     val initialBoard: Board = new SquaredBoard(size, hasMine)
 
