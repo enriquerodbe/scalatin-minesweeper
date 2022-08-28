@@ -16,12 +16,12 @@ jobs:
         with:
           nix_path: nixpkgs=channel:nixos-22.05
       - name: Download dependencies
-        run: nix develop -c sbt update
+        run: nix develop -ic sbt update
       - name: Check format
-        run: nix develop -c sbt checkFormat
+        run: nix develop -ic sbt checkFormat
       - name: Lint
-        run: nix develop -c sbt lint
+        run: nix develop -ic sbt lint
       - name: Test
-        run: nix develop -c sbt testCoverage
+        run: nix develop -ic sbt testCoverage
       - name: Mutation test
-        run: nix develop -c sbt mutationTest
+        run: nix develop -ic sbt mutationTest
