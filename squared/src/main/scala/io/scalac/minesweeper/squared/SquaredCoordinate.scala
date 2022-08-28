@@ -2,29 +2,13 @@ package io.scalac.minesweeper.squared
 
 import io.scalac.minesweeper.api.Coordinate
 
-final case class SquaredCoordinate(x: Int, y: Int, boardSize: Int)
-    extends Coordinate {
-  override lazy val neighbors: Seq[Coordinate] = {
-    Seq(
-      SquaredCoordinate.validated(x - 1, y - 1, boardSize),
-      SquaredCoordinate.validated(x - 1, y, boardSize),
-      SquaredCoordinate.validated(x - 1, y + 1, boardSize),
-      SquaredCoordinate.validated(x, y - 1, boardSize),
-      SquaredCoordinate.validated(x, y + 1, boardSize),
-      SquaredCoordinate.validated(x + 1, y - 1, boardSize),
-      SquaredCoordinate.validated(x + 1, y, boardSize),
-      SquaredCoordinate.validated(x + 1, y + 1, boardSize)
-    ).flatten
-  }
-}
+final case class SquaredCoordinate(x: Int, y: Int) extends Coordinate
 
 object SquaredCoordinate {
   def validated(x: Int, y: Int, boardSize: Int): Option[SquaredCoordinate] = {
     val max = maxIndex(boardSize)
-    if (x >= 0 && x <= max && y >= 0 && y <= max)
-      Some(new SquaredCoordinate(x, y, boardSize))
-    else
-      None
+    if (x >= 0 && x <= max && y >= 0 && y <= max) Some(SquaredCoordinate(x, y))
+    else None
   }
 
   def maxIndex(boardSize: Int): Int =
